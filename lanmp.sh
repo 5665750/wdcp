@@ -154,17 +154,23 @@ if [ $OS_RL == 2 ]; then
     apt-get -y autoremove
     [ -f /etc/mysql/my.cnf ] && mv /etc/mysql/my.cnf /etc/mysql/my.cnf.lanmpsave
     apt-get install -y gcc g++ make autoconf libltdl-dev libgd2-xpm-dev \
-        libfreetype6 libfreetype6-dev libxml2-dev libjpeg-dev libpng12-dev \
-        libcurl4-openssl-dev libssl-dev patch libmcrypt-dev libmhash-dev \
+        libfreetype6 libfreetype6-dev libxml2-dev libjpeg-dev libpng-dev \
+        libcurl4-gnutls-dev libssl-dev patch libmcrypt-dev libmhash-dev \
         libncurses5-dev  libreadline-dev bzip2 libcap-dev ntpdate \
         diffutils exim4 iptables unzip sudo cmake re2c bison \
         libicu-dev net-tools psmisc
     if [ $X86 == 1 ]; then
         ln -sf /usr/lib/x86_64-linux-gnu/libpng* /usr/lib/
         ln -sf /usr/lib/x86_64-linux-gnu/libjpeg* /usr/lib/
+        if [ -d /usr/include/x86_64-linux-gnu/curl ]; then
+            ln -sf /usr/include/x86_64-linux-gnu/curl /usr/include/
+        fi
     else
         ln -sf /usr/lib/i386-linux-gnu/libpng* /usr/lib/
         ln -sf /usr/lib/i386-linux-gnu/libjpeg* /usr/lib/
+        if [ -d /usr/include/i386-linux-gnu/curl ]; then
+	    ln -sf /usr/include/i386-linux-gnu/curl/   /usr/include/
+        fi
     fi
 else
     [ ! -f $INF/dag.txt ] && rpm --import conf/RPM-GPG-KEY.dag.txt && touch $INF/dag.txt

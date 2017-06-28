@@ -15,12 +15,14 @@ function start_srv {
     service memcached start
     service wdcp start
     service pureftpd start
-    if [ $R7 == 1 ];then
-	systemctl stop firewalld.service
-	systemctl disable firewalld.service
+    
+    if [ $R7 ] && [ $R7 == 1 ];then
+        systemctl stop firewalld.service
+        systemctl disable firewalld.service
 	systemctl restart iptables.service
 	systemctl enable iptables.service
     fi
+
     /sbin/iptables -I INPUT -p tcp -m tcp --dport 20000:20500 -m state --state NEW -j ACCEPT
     /sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT
     /sbin/iptables -I INPUT -p tcp --dport 21 -j ACCEPT
